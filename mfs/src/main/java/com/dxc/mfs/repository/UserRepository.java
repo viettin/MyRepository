@@ -7,4 +7,5 @@ import com.dxc.mfs.model.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 	List<User> findAllByUsername(String username);
+	List<User> findByUsernameAndPassword(String username, String password);
 }
