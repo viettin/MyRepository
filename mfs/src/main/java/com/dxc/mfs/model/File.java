@@ -24,10 +24,28 @@ public class File {
 	private int idFile;
 	private String fileName;
 	private String description;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idUser")
-	private User idUser;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "idUser")
+//	private User idUser;
+	private String uploader;
+	private String emailUploader;
 	private Date uploadDate;
+	public String getUploader() {
+		return uploader;
+	}
+
+	public void setUploader(String uploader) {
+		this.uploader = uploader;
+	}
+
+	public String getEmailUploader() {
+		return emailUploader;
+	}
+
+	public void setEmailUploader(String emailUploader) {
+		this.emailUploader = emailUploader;
+	}
+
 	@OneToMany(mappedBy = "idFile", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private List<Comment> commentList;
@@ -62,13 +80,6 @@ public class File {
 		this.description = description;
 	}
 
-	public User getIdUser() {
-		return idUser;
-	}
-
-	public void setIdUser(User idUser) {
-		this.idUser = idUser;
-	}
 
 	public Date getUploadDate() {
 		return uploadDate;

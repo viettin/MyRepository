@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.dxc.mfs.model.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-	List<User> findAllByUsername(String username);
-	List<User> findByUsernameAndPassword(String username, String password);
+	List<User> findAllByFullname(String fullname);
+	List<User> findByEmailAndPassword(String email, String password);
+//	List<User> findAllUser();
 }

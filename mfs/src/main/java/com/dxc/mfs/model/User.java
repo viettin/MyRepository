@@ -24,7 +24,7 @@ public class User {
 	@Id
 	@GeneratedValue
 	private int idUser;
-	private String username;
+	private String fullname;
 	private String password;
 	private String email;
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -35,7 +35,7 @@ public class User {
 	private Date createDate;
 	private boolean isAdmin;
 
-	@OneToMany(mappedBy = "idUser")
+	@OneToMany
 	@JsonIgnore
 	private List<File> filesList;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
@@ -50,12 +50,12 @@ public class User {
 		this.idUser = idUser;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getFullname() {
+		return fullname;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setfullname(String fullname) {
+		this.fullname = fullname;
 	}
 
 	public String getPassword() {
@@ -132,7 +132,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + idUser + ", username=" + username + ", password=" + password + "]";
+		return "User [id=" + idUser + ", username=" + fullname + ", password=" + password + "]";
 	}
 
 }
