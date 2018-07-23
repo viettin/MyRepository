@@ -52,9 +52,8 @@ public class File {
 	@OneToMany(mappedBy = "idFile", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private List<Download> download;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idType")
-	private Type idType;
+	
+	private String Type;
 
 	public int getIdFile() {
 		return idFile;
@@ -105,12 +104,14 @@ public class File {
 		this.download = download;
 	}
 
-	public Type getIdType() {
-		return idType;
+	public String getType() {
+		return Type;
 	}
 
-	public void setIdType(Type idType) {
-		this.idType = idType;
+	public void setType(String type) {
+		Type = type;
 	}
+
+	
 
 }
