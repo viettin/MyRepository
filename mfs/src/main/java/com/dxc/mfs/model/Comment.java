@@ -15,12 +15,24 @@ public class Comment {
 	@GeneratedValue
 	private int cmtId;
 	private String content;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idUser")
-	private User user;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idFile")
-	private File idFile;
+	private String  userComment ;
+	private int idfile;
+
+	public int getIdfile() {
+		return idfile;
+	}
+
+	public void setIdfile(int idfile) {
+		this.idfile = idfile;
+	}
+
+	public String getUserComment() {
+		return userComment;
+	}
+
+	public void setUserComment(String userComment) {
+		this.userComment = userComment;
+	}
 
 	public int getCmtId() {
 		return cmtId;
@@ -38,20 +50,7 @@ public class Comment {
 		this.content = content;
 	}
 
-	public User getUser() {
-		return user;
-	}
+	
 
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public File getIdFile() {
-		return idFile;
-	}
-
-	public void setIdFile(File idFile) {
-		this.idFile = idFile;
-	}
-
+	
 }

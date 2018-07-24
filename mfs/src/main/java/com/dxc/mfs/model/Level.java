@@ -14,15 +14,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "level")
 public class Level {
 	@Id
-	@GeneratedValue
 	private int idLevel;
 	private String levelName;
 	private int limitUp;
+	private int totalLimitUp;
 	private int limitDown;
 	private String img;
-	@OneToMany(mappedBy = "idLevel", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany
 	@JsonIgnore
-	private List<User> user;
+	private List<User> userList;
 
 	public int getIdLevel() {
 		return idLevel;
@@ -34,6 +34,14 @@ public class Level {
 
 	public String getLevelName() {
 		return levelName;
+	}
+
+	public int getTotalLimitUp() {
+		return totalLimitUp;
+	}
+
+	public void setTotalLimitUp(int totalLimitUp) {
+		this.totalLimitUp = totalLimitUp;
 	}
 
 	public void setLevelName(String levelName) {
@@ -64,12 +72,12 @@ public class Level {
 		this.img = img;
 	}
 
-	public List<User> getUser() {
-		return user;
+	public List<User> getUserList() {
+		return userList;
 	}
 
-	public void setUser(List<User> user) {
-		this.user = user;
+	public void setUserList(List<User> userList) {
+		this.userList = userList;
 	}
 
 }

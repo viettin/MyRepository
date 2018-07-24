@@ -28,7 +28,6 @@ public class User {
 	private String password;
 	private String email;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idLevel")
 	private Level idLevel;
 	private int currentUp;
 	private int currentDown;
@@ -125,7 +124,7 @@ public class User {
 	public List<Download> getDownloadList() {
 		return downloadList;
 	}
-
+	
 	public void setDownloadList(List<Download> downloadList) {
 		this.downloadList = downloadList;
 	}

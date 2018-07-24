@@ -46,10 +46,10 @@ public class File {
 		this.emailUploader = emailUploader;
 	}
 
-	@OneToMany(mappedBy = "idFile", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany
 	@JsonIgnore
 	private List<Comment> commentList;
-	@OneToMany(mappedBy = "idFile", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany
 	@JsonIgnore
 	private List<Download> download;
 	
