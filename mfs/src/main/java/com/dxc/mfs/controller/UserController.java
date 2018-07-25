@@ -34,6 +34,7 @@ public class UserController {
 	public @ResponseBody MessageStatus login( HttpServletRequest request, HttpSession session){
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
+		System.out.println(email + " : " + password);
 		User user = userService.checkLogin(email, password);
 		MessageStatus m = new MessageStatus();
 		if(user != null) {
@@ -65,7 +66,7 @@ public class UserController {
 		 return listUser;
  	}
 
-	@RequestMapping(value="adduser",method = RequestMethod.POST)
+	@RequestMapping(value="/adduser",method = RequestMethod.POST)
 	public  @ResponseBody MessageStatus addUser (HttpServletRequest request) {
 		
 		Date  date = new Date();

@@ -3,8 +3,8 @@ body{
 	color:red;
 	background:#c8c8c8;
 	font:600 16px/18px 'Open Sans',sans-serif;
-	background-image: url("../img/background-login2.jpg");
-
+/* 	background-image: url("../img/background-login2.jpg");
+ */
 }
 *,:after,:before{box-sizing:border-box}
 .clearfix:after,.clearfix:before{content:'';display:table}
