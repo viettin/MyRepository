@@ -19,7 +19,7 @@ var LoginCtrl = [ '$rootScope', '$scope', '$http', 'transformRequestAsFormPost',
 	         .then(function(response) {
 	        	 if (response.data.status === 'success'){
 	        		 $rootScope.userData = response.data.data;
-	        		 $state.go('user');
+	        		 $state.go('home');
 	        	 } else {
 	        		 $scope.errorMessage = 'email and password not correct';
 	        	 }

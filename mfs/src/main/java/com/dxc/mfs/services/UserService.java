@@ -43,15 +43,24 @@ public class UserService {
 		 return false;
 		 
 	 }
-	 public User updateUser (String email,String fullname, String password){
-		 User user = userRepository.findByEmail(email);
-		 if(user!=null) {
-			user.setfullname(fullname);
-			user.setPassword(password);
-			userRepository.save(user);
-			return user;
+	 public User updateUser (User user){
+		 User userUpdate = userRepository.findByEmail(user.getEmail());
+		 if(userUpdate != null) {
+			 userRepository.save(userUpdate);
+			 return userUpdate;
 		 }
-		 return null;
+		 return user;
+		 
+	 }
+	 public User updateUser (String email, String name,String pass){
+		 User userUpdate = userRepository.findByEmail(email);
+		 if(userUpdate != null) {
+			 userUpdate.setfullname(name);
+			 userUpdate.setPassword(pass);
+			 userRepository.save(userUpdate);
+			 return userUpdate;
+		 }
+		 return userUpdate;
 		 
 	 }
 }

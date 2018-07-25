@@ -26,50 +26,47 @@ public class UserController {
 	UserService userService;
 	@Autowired
 	CommentServices commentServices;
-	
-	
 
-	
-	@RequestMapping(value="/login", method = RequestMethod.POST)
-	public @ResponseBody MessageStatus login( HttpServletRequest request, HttpSession session){
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public @ResponseBody MessageStatus login(HttpServletRequest request, HttpSession session) {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		System.out.println(email + " : " + password);
 		User user = userService.checkLogin(email, password);
 		MessageStatus m = new MessageStatus();
-		if(user != null) {
-			 m.setStatus("success");
-			 m.setMessage("Login Success");
-			 m.setData(user);
-			 session.setAttribute("userDetail", user);
+		if (user != null) {
+			m.setStatus("success");
+			m.setMessage("Login Success");
+			m.setData(user);
+			session.setAttribute("userDetail", user);
 		} else {
 			m.setStatus("fail");
 			m.setMessage("Login unsuccess");
 		}
 		return m;
 	}
-	
-	@RequestMapping(value="/admin",method = RequestMethod.GET)
-	public  @ResponseBody List<User> getAllUserByAdmin (HttpSession session) {
-		
-		List<User> listUser = null;
-		
-		User userLoging = (User) session.getAttribute("userDetail");
-		 if( userLoging == null ) { // chua dang nhap
-			 
-		 } else {
-			 if (userLoging.isAdmin()) {
-				listUser = userService.getAllUser();
-			 }
-		 }
-		 
-		 return listUser;
- 	}
 
-	@RequestMapping(value="/adduser",method = RequestMethod.POST)
-	public  @ResponseBody MessageStatus addUser (HttpServletRequest request) {
-		
-		Date  date = new Date();
+	@RequestMapping(value = "/admin", method = RequestMethod.GET)
+	public @ResponseBody List<User> getAllUserByAdmin(HttpSession session) {
+
+		List<User> listUser = null;
+
+		User userLoging = (User) session.getAttribute("userDetail");
+		if (userLoging == null) { // chua dang nhap
+
+		} else {
+			if (userLoging.isAdmin()) {
+				listUser = userService.getAllUser();
+			}
+		}
+
+		return listUser;
+	}
+
+	@RequestMapping(value = "/adduser", method = RequestMethod.POST)
+	public @ResponseBody MessageStatus addUser(HttpServletRequest request) {
+
+		Date date = new Date();
 		User user = new User();
 		user.setfullname(request.getParameter("username"));
 		user.setPassword(request.getParameter("password"));
@@ -78,10 +75,10 @@ public class UserController {
 		user.setCreateDate(date);
 		userService.addUser(user);
 		MessageStatus m = new MessageStatus();
-		if(user != null) {
-			 m.setStatus("success");
-			 m.setMessage("Register Success");
-			 m.setData(user);
+		if (user != null) {
+			m.setStatus("success");
+			m.setMessage("Register Success");
+			m.setData(user);
 		} else {
 			m.setStatus("fail");
 			m.setMessage("Register unsuccess");
@@ -89,38 +86,56 @@ public class UserController {
 		return m;
 	}
 
-	@RequestMapping(value="delete/{email}", method = RequestMethod.DELETE)
-	public   @ResponseBody MessageStatus deleteByEmail(@PathVariable String email){
-		 
-		 MessageStatus m = new MessageStatus();
-			if(userService.deleteUser(email)) {
-				 m.setStatus("success");
-				 m.setMessage("delete Success");
-				 
-			} else {
-				m.setStatus("fail");
-				m.setMessage("delete unsuccess");
-			}
-			return m;
-}
-	@RequestMapping(value="update/{email}", method = RequestMethod.PATCH)
-	public   @ResponseBody MessageStatus updateByEmail(@PathVariable String email,HttpServletRequest request){
-		String fullname = request.getParameter("username");
-		String password = request.getParameter("password");
-		User user = userService.updateUser(email, fullname, password);
+	@RequestMapping(value = "delete/{email}", method = RequestMethod.DELETE)
+	public @ResponseBody MessageStatus deleteByEmail(@PathVariable String email) {
+
 		MessageStatus m = new MessageStatus();
-		if(user != null) {
-			 m.setStatus("success");
-			 m.setMessage("update Success");
-			 m.setData(user);
+		if (userService.deleteUser(email)) {
+			m.setStatus("success");
+			m.setMessage("delete Success");
+
+		} else {
+			m.setStatus("fail");
+			m.setMessage("delete unsuccess");
+		}
+		return m;
+	}
+
+	@RequestMapping(value = "update/{email}", method = RequestMethod.PATCH)
+	public @ResponseBody MessageStatus updateByEmail(@PathVariable String email, HttpServletRequest request,HttpSession session) {
+		String name = request.getParameter("fullname");
+		String pass = request.getParameter("password");
+		System.out.println(name);
+		System.out.println(pass);
+		User userLoging = (User) session.getAttribute("userDetail");
+		MessageStatus m = new MessageStatus();
+		if (userLoging != null) {
+			if (!userLoging.isAdmin()) {
+				userLoging.setfullname(name);
+				userLoging.setPassword(pass);
+				userService.updateUser(userLoging);
+				m.setStatus("success");
+				m.setMessage("update Success");
+				m.setData(userLoging);
+			} else {
+
+				User user = userService.updateUser(email, name, pass);
+				m.setStatus("success");
+				m.setMessage("update Success");
+				m.setData(user);
+				return m;
+
+			}
 		} else {
 			m.setStatus("fail");
 			m.setMessage("update unsuccess");
 		}
 		return m;
 	}
-	@RequestMapping(value="comment/{idfile}",method = RequestMethod.POST)
-	public  @ResponseBody MessageStatus commentFile (@PathVariable int idfile, HttpServletRequest request, HttpSession session) {
+
+	@RequestMapping(value = "comment/{idfile}", method = RequestMethod.POST)
+	public @ResponseBody MessageStatus commentFile(@PathVariable int idfile, HttpServletRequest request,
+			HttpSession session) {
 		User userLoging = (User) session.getAttribute("userDetail");
 		MessageStatus m = new MessageStatus();
 		Comment cmt = new Comment();
@@ -129,31 +144,25 @@ public class UserController {
 			cmt.setUserComment(userLoging.getFullname());
 			cmt.setIdfile(idfile);
 			commentServices.addComment(cmt);
-			if(commentServices.addComment(cmt)) {
-				 m.setStatus("success");
-				 m.setMessage("Comment Success");
-				 m.setData(cmt);
-				 return m;
-				
+			if (commentServices.addComment(cmt)) {
+				m.setStatus("success");
+				m.setMessage("Comment Success");
+				m.setData(cmt);
+				return m;
 			}
-			
-		}
-		
-		
-		else if (userLoging == null) {
+		} else if (userLoging == null) {
 			cmt.setContent(request.getParameter("content"));
 			cmt.setUserComment("Guest");
 			cmt.setIdfile(idfile);
 			commentServices.addComment(cmt);
-			if(commentServices.addComment(cmt)) {
-				 m.setStatus("success");
-				 m.setMessage("Comment Success");
-				 m.setData(cmt);
-				 return m;
-				
+			if (commentServices.addComment(cmt)) {
+				m.setStatus("success");
+				m.setMessage("Comment Success");
+				m.setData(cmt);
+				return m;
+
 			}
 		}
-		 return m;
+		return m;
 	}
-	}
-	
+}
