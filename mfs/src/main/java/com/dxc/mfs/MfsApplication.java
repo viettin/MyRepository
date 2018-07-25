@@ -26,7 +26,7 @@ public class MfsApplication {
 			User user1 = new User();
 			user1.setfullname("tin");
 			user1.setEmail("tin@gmail.com");
-			user1.setPassword("123");
+			user1.setPassword("1234567");
 			user1.setAdmin(true);
 			user1 = userRepository.save(user1);
 			User user2 = new User();

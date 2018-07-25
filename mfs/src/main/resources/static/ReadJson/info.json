@@ -1,0 +1,19 @@
+ {
+  "customers": [
+    {
+      "Name": "Dammio Ta",
+      "City": "Paris",
+      "Country": "France"
+    },
+    {
+      "Name": "Alonso Deprie",
+      "City": "New York",
+      "Country": "USA"
+    },
+    {
+      "Name": "Kamanoto Yikoa",
+      "City": "Tokyo",
+      "Country": "Japan"
+    }
+  ]
+}

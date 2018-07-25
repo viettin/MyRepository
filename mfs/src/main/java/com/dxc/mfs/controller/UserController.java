@@ -30,7 +30,7 @@ public class UserController {
 	
 
 	
-	@RequestMapping(value="login", method = RequestMethod.POST)
+	@RequestMapping(value="/login", method = RequestMethod.POST)
 	public @ResponseBody MessageStatus login( HttpServletRequest request, HttpSession session){
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
@@ -48,7 +48,7 @@ public class UserController {
 		return m;
 	}
 	
-	@RequestMapping(value="admin",method = RequestMethod.GET)
+	@RequestMapping(value="/admin",method = RequestMethod.GET)
 	public  @ResponseBody List<User> getAllUserByAdmin (HttpSession session) {
 		
 		List<User> listUser = null;
