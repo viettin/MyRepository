@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
+import javax.persistence.Lob;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "level")
@@ -16,9 +16,9 @@ public class Level {
 	@Id
 	private int idLevel;
 	private String levelName;
-	private int limitUp;
-	private int totalLimitUp;
-	private int limitDown;
+	private byte limitUp;
+	private byte totalLimitUp;
+	private byte limitDown;
 	private String img;
 	@OneToMany
 	@JsonIgnore
@@ -36,11 +36,11 @@ public class Level {
 		return levelName;
 	}
 
-	public int getTotalLimitUp() {
+	public byte getTotalLimitUp() {
 		return totalLimitUp;
 	}
 
-	public void setTotalLimitUp(int totalLimitUp) {
+	public void setTotalLimitUp(byte totalLimitUp) {
 		this.totalLimitUp = totalLimitUp;
 	}
 
@@ -48,19 +48,19 @@ public class Level {
 		this.levelName = levelName;
 	}
 
-	public int getLimitUp() {
+	public byte getLimitUp() {
 		return limitUp;
 	}
 
-	public void setLimitUp(int limitUp) {
+	public void setLimitUp(byte limitUp) {
 		this.limitUp = limitUp;
 	}
 
-	public int getLimitDown() {
+	public byte getLimitDown() {
 		return limitDown;
 	}
 
-	public void setLimitDown(int limitDown) {
+	public void setLimitDown(byte limitDown) {
 		this.limitDown = limitDown;
 	}
 

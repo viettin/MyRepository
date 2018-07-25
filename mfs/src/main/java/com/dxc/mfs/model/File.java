@@ -3,17 +3,13 @@ package com.dxc.mfs.model;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.dxc.mfs.model.Comment;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -27,9 +23,20 @@ public class File {
 //	@ManyToOne(fetch = FetchType.LAZY)
 //	@JoinColumn(name = "idUser")
 //	private User idUser;
+	
 	private String uploader;
 	private String emailUploader;
 	private Date uploadDate;
+	 @Lob
+	 private byte[] data;
+	 public byte[] getData() {
+		return data;
+	}
+
+	public void setData(byte[] data) {
+		this.data = data;
+	}
+
 	public String getUploader() {
 		return uploader;
 	}
