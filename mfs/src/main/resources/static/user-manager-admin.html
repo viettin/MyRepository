@@ -8,6 +8,7 @@
 
     <!-- Title Page-->
     <title>Quản lý người dùng</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
     <!-- Fontfaces CSS-->
     <link href="css/font-face.css" rel="stylesheet" media="all">
@@ -29,7 +30,7 @@
 
     <!-- Main CSS-->
     <link href="css/theme.css" rel="stylesheet" media="all">
-<script>
+<!-- <script>
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope, $http) {
   $http.get("http://localhost:8080/admin")
@@ -40,10 +41,11 @@ app.controller('myCtrl', function($scope, $http) {
 
   });
 });
-</script>
+</script> -->
+<script src="src/main/resources/static/js/controller.js"></script>
 </head>
 
-<body class="animsition" ng-app="myApp" >
+<body class="animsition" ng-app="myApp" ng-controller="myCtrl">
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
         <header class="header-mobile d-block d-lg-none">
@@ -222,7 +224,7 @@ app.controller('myCtrl', function($scope, $http) {
             <!-- HEADER DESKTOP-->
 
             <!-- MAIN CONTENT-->
-            <div class="main-content" ng-controller="myCtrl">
+            <div class="main-content" >
                 <div class="user-data m-b-30">
                                     <h3 class="title-3 m-b-30">
                                         <i class="zmdi zmdi-account-calendar"></i>quản lý người dùng</h3>
@@ -253,7 +255,7 @@ app.controller('myCtrl', function($scope, $http) {
                                                     </td>
                                                     <td>
                                                         <div>
-                                                            <h6>{{user.fullname}}</h6>
+                                                            <h6 ng-model="fullname"></h6>
                                                             <span>
                                                                 <a>{{user.email}}</a>
                                                             </span>

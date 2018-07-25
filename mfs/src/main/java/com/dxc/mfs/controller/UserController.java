@@ -52,6 +52,7 @@ public class UserController {
 	public @ResponseBody MessageStatus login(HttpServletRequest request, HttpSession session) {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
+		System.out.println(email + " : " + password);
 		User user = userService.checkLogin(email, password);
 		MessageStatus m = new MessageStatus();
 		if (user != null) {
@@ -80,6 +81,7 @@ public class UserController {
 			}
 		}
 
+<<<<<<< HEAD
 		return listUser;
 	}
 
