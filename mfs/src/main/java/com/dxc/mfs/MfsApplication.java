@@ -44,8 +44,55 @@ public class MfsApplication {
 			user1.setCreateDate(date);
 		
 			user1 = userRepository.save(user1);
+<<<<<<< .mine
 //			lv3.getUserList().add(user1);
 //			user1.setIdLevel(levelRepository.findByIdLevel(3));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=======
+			User user2 = new User();
+			user2.setfullname("tin2");
+			user2.setEmail("tin2@gmail.com");
+			user2.setPassword("1234567");
+			user2.setAdmin(false);
+			user2 = userRepository.save(user2);
+			File file = new File();
+			file.setFileName("test");
+			file.setDescription("da~ bao la test ma");
+			file.setEmailUploader("tin2@gmail.com");
+			file.setType("txt");
+			fileRepository.save(file);
+			File file2 = new File();
+			file2.setFileName("test");
+			file2.setDescription("da~ bao la test ma");
+			file2.setEmailUploader("tin2@gmail.com");
+			file2.setType("txt");
+			fileRepository.save(file2);
+			File file3 = new File();
+			file3.setFileName("test");
+			file3.setDescription("da~ bao la test ma");
+			file3.setType("txt");
+			fileRepository.save(file3);
+>>>>>>> .theirs
 			Level lv = new Level();
 			lv.setIdLevel(1);
 			lv.setImg("bronze");

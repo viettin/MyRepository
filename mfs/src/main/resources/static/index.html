@@ -2,107 +2,68 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags-->
-    <meta charset="UTF-8">
+<!-- Required meta tags-->
+<meta charset="UTF-8">
 
-    <!-- Title Page-->
-    <title>Người dùng không đăng nhập</title>
-<!--     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
-<!--  -->    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script>
- -->    
- <link rel="stylesheet" type="text/css" href="css/style.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-   <script src="https://code.angularjs.org/1.3.0-rc.2/angular-messages.js"></script>
+<!-- Title Page-->
+<title>Người dùng không đăng nhập</title>
 
- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" />
-    <script>
-      var demoApp = angular.module('myApp',["ngMessages"])
-        .controller( "LoginCtrl", ['$scope', function($scope) {
-        	$scope.success1 = false;
- 			$scope.login = function() {
- 				$scope.success1=true;
- 			}
- 		}])
- 		.controller( "LogupCtrl", ['$scope', function($scope) {
-        	$scope.success2 = false;
- 			$scope.logup = function() {
- 				$scope.success2=true;
- 			}
- 		}]);
+ 	<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   	<!-- <script src="https://code.angularjs.org/1.3.0-rc.2/angular-messages.js"></script> -->
 
-		 var compareTo = function() {
-		    return {
-		      require: "ngModel",
-		      scope: {
-		        otherModelValue: "=compareTo"
-		      },
-		      link: function(scope, element, attributes, ngModel) {
+ 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" />
+ 	<script src="vendor/jquery-3.2.1.min.js"></script>
+ 	<script src="vendor/angular.min.js"></script>
+	<script src="vendor/angular-ui-router.min.js"></script> 
 
-		        ngModel.$validators.compareTo = function(modelValue) {
-		          return modelValue == scope.otherModelValue;
-		        };
+	<script src="js/app.js"></script>
+	
+	
+ 	
+    <!-- <script>
+    
+    var app = angular.module("myApp", ["ngMessages"]);
+	 var compareTo = function() {
+	    return {
+	      require: "ngModel",
+	      scope: {
+	        otherModelValue: "=compareTo"
+	      },
+	      link: function(scope, element, attributes, ngModel) {
 
-		        scope.$watch("otherModelValue", function() {
-		          ngModel.$validate();
-		        });
-		      }
-		    };
-		  };
+	        ngModel.$validators.compareTo = function(modelValue) {
+	          return modelValue == scope.otherModelValue;
+	        };
 
-		  demoApp.directive("compareTo", compareTo);
- 		
-    </script>
+	        scope.$watch("otherModelValue", function() {
+	          ngModel.$validate();
+	        });
+	      }
+	    };
+	  };
+
+	  app.directive("compareTo", compareTo);
+		
+</script> -->
 
 </head>
 
 <body class="animsition" ng-app="myApp">
-    
-	    <h1>MFS</h1>
-	    <h1 ng-if="userData.fullname"> Welcome {{userData.fullname}}</h1>
-	    <a ui-sref="home" class="btn btn-primary">Home</a>
-    	<a ui-sref="login" class="btn btn-danger">Login</a>
-    	<a ui-sref="register" class="btn btn-danger">Register</a>
-    	<a ui-sref="user" class="btn btn-danger">user</a>
-    	
-   	<div ui-view>	</div>
-
-    <!-- Jquery JS-->
-    <script src="vendor/jquery-3.2.1.min.js"></script>
+	<div>
+		<h1 align = "center">Mini File Share</h1>
+		<!-- <h1 ng-if="userData.fullname">Welcome {{userData.fullname}}</h1> -->
+		<a ui-sref="home" class="btn btn-primary">Home</a>
+		<a ui-sref="login" class="btn btn-danger" ng-if="!userData">Dang nhap</a>
+		<a ui-sref="register" class="btn btn-danger" ng-if="!userData">Dang ky</a>
+		<a ui-sref="manage-user" class="btn btn-danger" ng-if="userData && userData.admin">Quan ly tai khoan</a>
+		<a ui-sref="logout" class="btn btn-danger" ng-if="userData">Dang xuat</a>
+		<a ui-sref="update" class="btn btn-danger">Sua</a>
+	</div>
 	
-	<script src="vendor/angular.min.js"></script>
-    <script src="vendor/angular-ui-router.min.js"></script>
 
-    <script src="js/partial/login-ctrl.js"></script>
-    
-    
-    <!-- Main JS-->
-    <script src="js/app.js"></script>
-    
-    
-    <!-- Jquery JS-->
-<!--     <script src="vendor/jquery-3.2.1.min.js"></script>
- -->    <!-- Bootstrap JS-->
-    <script src="vendor/bootstrap-4.1/popper.min.js"></script>
-    <script src="vendor/bootstrap-4.1/bootstrap.min.js"></script>
-    <!-- Vendor JS       -->
-    <script src="vendor/slick/slick.min.js">
-    </script>
-    <script src="vendor/wow/wow.min.js"></script>
-    <script src="vendor/animsition/animsition.min.js"></script>
-    <script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
-    </script>
-    <script src="vendor/counter-up/jquery.waypoints.min.js"></script>
-    <script src="vendor/counter-up/jquery.counterup.min.js">
-    </script>
-    <script src="vendor/circle-progress/circle-progress.min.js"></script>
-    <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="vendor/chartjs/Chart.bundle.min.js"></script>
-    <script src="vendor/select2/select2.min.js">
-    </script>
-
-    <!-- Main JS-->
-    <script src="js/main.js"></script>
+	<div ui-view></div>
 
 </body>
 

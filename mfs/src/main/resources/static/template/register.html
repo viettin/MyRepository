@@ -1,7 +1,51 @@
-<h1>Register</h1>
-<!-- <input type="text" ng-model="userData.usernamel"/>
-<input type="text" ng-model="userData.email"/>
-<input type="text" ng-model="userData.password"/>
 
-<button ng-click="doLogup()">Logup</button>
-<h5>{{errorMessage}}</h5> -->
+<div class="login-wrap">
+	<div class="login-html">
+		<input id="tab-2" type="radio" name="tab" class="sign-up" checked> 
+		<label for="tab-2" class="tab">DANG KY</label>
+		
+		<div class="login-form">
+			<form class="sign-up-htm" name="signupform" novalidate>
+			
+				<div class="group">
+                	<input name="fullname" type="text" class="input" placeholder="Ten dang nhap" ng-model="userData.fullname" ng-minlength="6" ng-maxlength="50" ng-pattern="/^[a-zA-Z]+$/" required>
+                    <i ng-show="signupform.fullname.$dirty && signupform.fullname.$valid"></i>
+
+                    <div ng-show="signupform.fullname.$dirty && signupform.fullname.$invalid" class="text-danger">
+                        <span ng-show="signupform.fullname.$error.required">Ten dang nhap khong duoc bo trong</span>
+                        <span ng-show="signupform.fullname.$error.minlength">Ten dang nhap phai dai hon 6 ky tu</span>
+                        <span ng-show="signupform.fullname.$error.maxlength">Ten dang nhap phai ngan hon 50 ky tu</span>                          
+                    </div>
+                 </div>
+			
+				<div class="group">					    
+			        <input name="email" type="email" class="input" placeholder="Email" ng-model="userData.email" autocomplete="off" >
+			        <i ng-show="signupform.email.$dirty && signupform.email.$valid"></i>
+			        <div ng-show="signupform.email.$dirty && signupform.email.$invalid" class="text-danger">
+			            <span ng-show="signupform.email.$error.required">Chua nhap dia chi email</span>
+			            <span ng-show="signupform.email.$error.email">Khong dung dinh dang email</span>
+			        </div>	   
+				</div>
+			
+				<div class="group">
+		            <input name="password" ng-model="userData.password" type="text" class="input" placeholder="Mat khau" ng-minlength="6" ng-maxlength="30"/>
+		            <i ng-show="signinform.password.$dirty && signinform.password.$valid"></i>
+					<div ng-messages="signinform.password.$error" ng-messages-include="messages.html"></div>
+		            <div ng-show="signinform.password.$dirty && signinform.password.$invalid" class="text-danger">
+			            <span ng-show="signinform.password.$error.required">Mat khau khong duoc bo trong</span>
+			            <span ng-show="signinform.password.$error.minlength">Mat khau phai dai hon 6 ky tu</span>
+			            <span ng-show="signinform.password.$error.maxlength">Mat khau phai ngan hon 30 ky tu</span>
+		            </div>
+				</div>
+							
+				<div class="group">
+					<button ng-click="doLogup()" style="color: white" class="button">
+						<i class="fa fa-sign-in"></i> Dang ky
+					</button>
+				</div>
+			</form>
+			
+			
+		</div>
+	</div>
+</div>
