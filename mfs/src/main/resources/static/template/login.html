@@ -1,35 +1,38 @@
-
-		<div class="login-form">
-			<form class="sign-in-htm" name="signinform" novalidate>
+<div class="login-wrap2">
+	<div class="login-html2">
+<!-- 		<input id="tab-2" type="radio" name="tab" class="sign-up" checked> 
+ -->		<label for="tab-2" class="tab2" style="color:white">DANG NHAP</label>
+		
+		<div class="login-form2">			
+		<form name="signinform" novalidate>
 			
-				<div class="group">					    
-			        <input name="email" type="email" class="input" placeholder="Email" ng-model="userData.email" autocomplete="off" >
+				<div class="group2">					    
+			        <input name="email" type="email" class="input2" placeholder="Email" ng-model="userData.email" autocomplete="off" >
 			        <i ng-show="signinform.email.$dirty && signinform.email.$valid"></i>
 			        <div ng-show="signinform.email.$dirty && signinform.email.$invalid" class="text-danger">
-			            <span ng-show="signinform.email.$error.required">Chưa nhập địa chỉ email</span>
-			            <span ng-show="signinform.email.$error.email">Không đúng định dạng email</span>
+			            <span ng-show="signinform.email.$error.required">Chua nhap dia chi email</span>
+			            <span ng-show="signinform.email.$error.email">Khong dung dinh dang email</span>
 			        </div>	   
 				</div>
 			
-				<div class="group">
-		            <input name="password" ng-model="userData.password" type="text" class="input" placeholder="Mật khẩu" ng-minlength="6" ng-maxlength="30"/>
+				<div class="group2">
+		            <input name="password" ng-model="userData.password" type="text" class="input2" placeholder="Mat khau" ng-minlength="6" ng-maxlength="30"/>
 		            <i ng-show="signinform.password.$dirty && signinform.password.$valid"></i>
 					<div ng-messages="signinform.password.$error" ng-messages-include="messages.html"></div>
 		            <div ng-show="signinform.password.$dirty && signinform.password.$invalid" class="text-danger">
-			            <span ng-show="signinform.password.$error.required">Mật khẩu không được bỏ trống</span>
-			            <span ng-show="signinform.password.$error.minlength">Mật khẩu phải dài hơn 6 kí tự</span>
-			            <span ng-show="signinform.password.$error.maxlength">Mật khẩu phải ngắn hơn 30 kí tự</span>
+			            <span ng-show="signinform.password.$error.required">Mat khau khong duoc bo trong</span>
+			            <span ng-show="signinform.password.$error.minlength">Mat khau phai dai hon 6 ky tu</span>
+			            <span ng-show="signinform.password.$error.maxlength">Mat khau phai ngan hon 3o ky tu</span>
 		            </div>
 				</div>
 							
-				<div class="group">
-					<button ng-click="doLogin()" style="color: white" class="button">
-						<i class="fa fa-sign-in"></i> Đăng nhập
+				<div class="group2">
+					<button ng-click="doLogin()" style="color: white" class="button2">
+						<i class="fa fa-sign-in"></i> Dang nhap
 					</button>
 				</div>
 			</form>
-			
-			
-			
-		</div>
-	
+	 
+	 </div>
+	 </div>
+	 </div>

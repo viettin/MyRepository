@@ -1,4 +1,4 @@
-<h1>Home</h1>
+<h1 align="center">Home</h1>
 
 <!-- PAGE CONTAINER-->
  <div class="page-container">
@@ -9,7 +9,7 @@
                  <div class="header-wrap">
                  
                      <form class="form-header" action="" method="POST">
-                         <input class="au-input au-input--xl" type="text" name="search" placeholder="Tìm kiếm..." />
+                         <input class="au-input au-input--xl" type="text" name="search" placeholder="Tim kiem..." />
                         
                      </form>
                      
@@ -24,16 +24,22 @@
      <table class="table table-data2">
          <thead>
              <tr>
-                 <th>type</th>
-                 <th>desciption</th>
+             	<th>Ten file</th>
+                 <th>Loai</th>
+                 <th>Mieu ta</th>
+                 <th>Nguoi dang</th>
+                 <th>Ngay dang</th>
+                 
+
              </tr>
          </thead>
          <tbody>
              <tr class="tr-shadow" ng-repeat="file in listFile">
-                 <td>{{file.type}}</td>
-                 <td>{{file.description}}</td>
-                 <!-- <td><button ng-click="deleteUser(user.email)">Delete</button></td> -->
-                 
+             	<td>{{file.file_name}}</td>
+             	<td>{{file.type}}</td>
+             	<td>{{file.description}}</td>
+                <td>{{file.email_uploader}}</td>
+                <td>{{file.upload_date}}</td>
              </tr>
          </tbody>
        </table>

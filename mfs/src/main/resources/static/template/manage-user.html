@@ -1,21 +1,30 @@
+
 <div class="col-md-12">
- <!-- DATA TABLE -->
  <div class="table-responsive table-responsive-data2">
+ <h2 align="center">QUAN LY TAI KHOAN</h2>
      <table class="table table-data2">
          <thead>
              <tr>
-                 <th>email</th>
-                 <th>ten</th>
-                 <th>action</th>
+                 <th>Email</th>
+                 <th>Ten</th>
+                 <th>Mat khau</th>
+                 <th>Hanh dong</th>
              </tr>
          </thead>
          <tbody>
              <tr class="tr-shadow" ng-repeat="user in listUser">
                  <td>{{user.email}}</td>
                  <td>{{user.fullname}}</td>
+                 <td>{{user.password}}</td>
                  <!-- <td><button ng-click="deleteUser(user.email)">Delete</button></td> -->
-                 <td><button ng-click="doDelete(user.email)">Delete</button></td>
+                 <td>
+                 	<button ng-click="doDelete(user.email)">Xoa</button>
+                 	<button><a ui-sref="update" class="btn btn-danger">Sua</a></button>
+                 			
+                 	
                  
+                 
+                 </td>              
              </tr>
          </tbody>
        </table>

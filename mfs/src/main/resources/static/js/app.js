@@ -27,11 +27,40 @@ var LoginCtrl = [ '$rootScope', '$scope', '$http', 'transformRequestAsFormPost',
 	}
 }]
 
+var LogoutCtrl = [ '$rootScope', '$scope', '$http', 'transformRequestAsFormPost', '$state', function ($rootScope, $scope, $http, transformRequestAsFormPost, $state) {
+	/*$scope.userData = {
+		email : '',
+		password : ''
+	}*/
+	
+	/*$scope.errorMessage = '';*/
+	
+	$scope.doLogin = function () {
+		$scope.errorMessage = '';
+		//send data cho backend va kiem tra ket qua.
+		$http({
+	          method  : 'GET',
+	          url     : '/logout',
+	          data    : $scope.userData,
+	          headers : { 'Content-Type': 'application/x-www-form-urlencoded' },
+	          transformRequest: transformRequestAsFormPost
+	         })
+	         .then(function(response) {
+	        	 if (response.data.status === 'success'){
+	        		 $rootScope.userData = response.data.data;
+	        		 $state.go('home');
+	        	 } else {
+	        		 $scope.errorMessage = 'email and password not correct';
+	        	 }
+	         });
+	}
+}]
+
 var LogupCtrl = [ '$rootScope', '$scope', '$http', 'transformRequestAsFormPost', '$state', function ($rootScope, $scope, $http, transformRequestAsFormPost, $state) {
 	$scope.userData = {
 		email : '',
 		password : '',
-		username:''
+		fullname:''
 	}
 	
 	$scope.errorMessage = '';
@@ -103,18 +132,29 @@ var DeleteCtrl = [ '$rootScope', '$scope', '$http', 'transformRequestAsFormPost'
 	
 	$scope.init();
 	
+}]
+
+var InitCtrl = [ '$rootScope', '$scope', '$http', 'transformRequestAsFormPost', '$state', function ($rootScope, $scope, $http, transformRequestAsFormPost, $state) {
+	
+	
+	
+
 	$scope.init1 = function () {
 		$http({
 	          method  : 'GET',
-	          url     : '/files'
+	          url     : '/file'
 	         })
 	         .then(function(response) {
 	        	 $scope.listFile = response.data;
+	        	 $scope.listFile = $scope.listFile.data; 
+	         }).catch((err)=>{
+	        	 console.log(err);
 	         });
 	}
 	
 	$scope.init1();
 }]
+
 var UpdateCtrl = [ '$rootScope', '$scope', '$http', 'transformRequestAsFormPost', '$state', function ($rootScope, $scope, $http, transformRequestAsFormPost, $state) {
 	$scope.userData1 = {
 		username:'',
@@ -137,7 +177,7 @@ var UpdateCtrl = [ '$rootScope', '$scope', '$http', 'transformRequestAsFormPost'
 	         .then(function(response) {
 	        	 if (response.data.status === 'success'){
 	        		 $rootScope.userData = response.data.data;
-	        		 $scope.errorMessage = 'good';
+	        		 $state.go('manage-user');
 	        	 } else {
 	        		 $scope.errorMessage = 'email and password not correct';
 	        	 }
@@ -151,6 +191,9 @@ myApp.controller('LoginCtrl', LoginCtrl);
 myApp.controller('LogupCtrl', LogupCtrl);
 myApp.controller('DeleteCtrl', DeleteCtrl);
 myApp.controller('UpdateCtrl', UpdateCtrl);
+myApp.controller('InitCtrl', InitCtrl);
+myApp.controller('LogoutCtrl', LogoutCtrl);
+
 
 
 
@@ -163,7 +206,8 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
         // HOME STATES AND NESTED VIEWS ========================================
         .state('home', {
             url: '/home',
-            templateUrl: 'template/home.html'
+            templateUrl: 'template/home.html',
+            controller: 'InitCtrl'
         })
         
         .state('login', {
@@ -171,16 +215,17 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
         	templateUrl: 'template/login.html',
     		controller: 'LoginCtrl'
         })
-//        .state('login2', {
-//        	url: '/login2',
-//        	templateUrl: 'template/login2.html',
-//    		controller: 'LoginCtrl'
-//        })
+        .state('logout', {
+        	url: '/logout',
+        	templateUrl: 'template/home.html',
+    		controller: 'LogoutCtrl'
+        })
         .state('register', {
         	url: '/register',
         	templateUrl: 'template/register.html',
-        	controller: 'LogupCtrl'
+    		controller: 'LogupCtrl'
         })
+        
         .state('manage-user', {
         	url: '/manage-user',
         	templateUrl: 'template/manage-user.html',
