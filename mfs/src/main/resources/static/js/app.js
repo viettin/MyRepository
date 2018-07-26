@@ -135,16 +135,16 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
             templateUrl: 'template/home.html'
         })
         
-        /*.state('login', {
+        .state('login', {
         	url: '/login',
         	templateUrl: 'template/login.html',
     		controller: 'LoginCtrl'
-        })*/
-        .state('login2', {
-        	url: '/login2',
-        	templateUrl: 'template/login2.html',
-    		controller: 'LoginCtrl'
         })
+//        .state('login2', {
+//        	url: '/login2',
+//        	templateUrl: 'template/login2.html',
+//    		controller: 'LoginCtrl'
+//        })
         .state('register', {
         	url: '/register',
         	templateUrl: 'template/register.html',

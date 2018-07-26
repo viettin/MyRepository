@@ -1,5 +1,41 @@
-<h1>Login</h1>
-<input type="text" ng-model="userData.email"/>
-<input type="text" ng-model="userData.password"/>
-<button ng-click="doLogin()">Login</button>
-<h5>{{errorMessage}}</h5>
+
+<div class="login-wrap">
+	<div class="login-html">
+	<input id="tab-2" type="radio" name="tab" class="sign-up" checked> 
+		<label for="tab-2" class="tab">ĐĂNG KÝ</label>
+		
+		<div class="login-form">
+			<form class="sign-in-htm" name="signinform" novalidate>
+			
+				<div class="group">					    
+			        <input name="email" type="email" class="input" placeholder="Email" ng-model="userData.email" autocomplete="off" >
+			        <i ng-show="signinform.email.$dirty && signinform.email.$valid"></i>
+			        <div ng-show="signinform.email.$dirty && signinform.email.$invalid" class="text-danger">
+			            <span ng-show="signinform.email.$error.required">Chưa nhập địa chỉ email</span>
+			            <span ng-show="signinform.email.$error.email">Không đúng định dạng email</span>
+			        </div>	   
+				</div>
+			
+				<div class="group">
+		            <input name="password" ng-model="userData.password" type="text" class="input" placeholder="Mật khẩu" ng-minlength="6" ng-maxlength="30"/>
+		            <i ng-show="signinform.password.$dirty && signinform.password.$valid"></i>
+					<div ng-messages="signinform.password.$error" ng-messages-include="messages.html"></div>
+		            <div ng-show="signinform.password.$dirty && signinform.password.$invalid" class="text-danger">
+			            <span ng-show="signinform.password.$error.required">Mật khẩu không được bỏ trống</span>
+			            <span ng-show="signinform.password.$error.minlength">Mật khẩu phải dài hơn 6 kí tự</span>
+			            <span ng-show="signinform.password.$error.maxlength">Mật khẩu phải ngắn hơn 30 kí tự</span>
+		            </div>
+				</div>
+							
+				<div class="group">
+					<button ng-click="doLogin()" style="color: white" class="button">
+						<i class="fa fa-sign-in"></i> Đăng nhập
+					</button>
+				</div>
+			</form>
+			
+			
+			
+		</div>
+	</div>
+</div>
