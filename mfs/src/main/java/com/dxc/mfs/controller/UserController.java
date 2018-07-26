@@ -81,14 +81,19 @@ public class UserController {
 			}
 		}
 
-<<<<<<< HEAD
+
 		return listUser;
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST) //register
-	public @ResponseBody MessageStatus addUser(HttpServletRequest request) {
+//	@RequestMapping(value = "/register", method = RequestMethod.POST) //register
+//	public @ResponseBody MessageStatus addUser(HttpServletRequest request) {
+//
+//		Date date = new Date();
+//		return null;}
 
-		Date date = new Date();
+	@RequestMapping(value="/adduser",method = RequestMethod.POST)
+	public  @ResponseBody MessageStatus adduser (HttpServletRequest request) {
+		Date  date = new Date();
 		User user = new User();
 		user.setfullname(request.getParameter("fullname"));
 		user.setPassword(request.getParameter("password"));
@@ -280,11 +285,9 @@ public class UserController {
 	                .path(newFile.getFileName())
 	                .toUriString();
 return m;
-	     
+	     	
 	    }
-
-
-	    @GetMapping("/downloadFile/{fileId}")
+@GetMapping("/downloadFile/{fileId}")
 	    public ResponseEntity<Resource> downloadFile(@PathVariable int fileId) {
 	        // Load file from database
 	        File dbFile = fileServices.getByIdFile(fileId);
