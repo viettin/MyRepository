@@ -23,7 +23,9 @@ public class File {
 //	@ManyToOne(fetch = FetchType.LAZY)
 //	@JoinColumn(name = "idUser")
 //	private User idUser;
+	private long size;
 	
+
 	private String uploader;
 	private String emailUploader;
 	private Date uploadDate;
@@ -68,6 +70,13 @@ public class File {
 
 	public void setIdFile(int idFile) {
 		this.idFile = idFile;
+	}
+	public long getSize() {
+		return size;
+	}
+
+	public void setSize(long size) {
+		this.size = size;
 	}
 
 	public String getFileName() {

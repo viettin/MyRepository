@@ -1,10 +1,9 @@
 package com.dxc.mfs.controller;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,10 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +26,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.dxc.mfs.model.Comment;
 import com.dxc.mfs.model.File;
-import com.dxc.mfs.model.UploadFileResponse;
 import com.dxc.mfs.model.User;
 import com.dxc.mfs.services.CommentServices;
 import com.dxc.mfs.services.FileServices;
@@ -157,7 +152,7 @@ public class UserController {
 
 	@RequestMapping(value = "update/{email}", method = RequestMethod.PATCH) // cap nhat thong tin user
 	public @ResponseBody MessageStatus updateByEmail(@PathVariable String email, HttpServletRequest request) {
-		String fullname = request.getParameter("username");
+		String fullname = request.getParameter("fullname");
 		String password = request.getParameter("password");
 		User user = userService.updateUser(email, fullname, password);
 		MessageStatus m = new MessageStatus();
@@ -245,21 +240,17 @@ public class UserController {
 		MessageStatus m = new MessageStatus();
 		User userLoging = (User) session.getAttribute("userDetail");
 		if (userLoging == null) { // chua dang nhap
-			m.setStatus("fail cmnr");
-			m.setMessage("fail cmnr");
+			m.setStatus("fail ");
+			m.setMessage("fail ");
 			return m;
 
 		} else {
-			if (!userLoging.isAdmin()) {
+			
 				File file = fileServices.getByIdFile(idFile);
 				m.setStatus("success");
 				m.setMessage("Load Success");
 				m.setData(file);
-			} else {
-				m.setStatus("fail cmnr");
-				m.setMessage("fail cmnr");
-				return m;
-			}
+			
 			return m;
 		}
 	}
@@ -320,13 +311,28 @@ public class UserController {
 	}
 
 	@GetMapping("/downloadFile/{fileId}")
-	public ResponseEntity<Resource> downloadFile(@PathVariable int fileId) {
-		// Load file from database
-		File dbFile = fileServices.getByIdFile(fileId);
-
-		return ResponseEntity.ok().contentType(MediaType.parseMediaType(dbFile.getType()))
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getIdFile() + "\"")
-				.body(new ByteArrayResource(dbFile.getData()));
+	public ResponseEntity<byte[]> getFile(@PathVariable int fileId) {
+		File file = fileServices.getByIdFile(fileId);
+		
+		if(file !=null) {
+			
+			return ResponseEntity.ok()
+					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
+					.body(file.getData());	
+		}
+		
+		return ResponseEntity.status(404).body(null);
 	}
+	@RequestMapping(value = "/search/{condition}", method = RequestMethod.POST) // Get File cho trang chu
+	public @ResponseBody MessageStatus getAllFile(@PathVariable String condition,HttpServletRequest request) {
+		String search = request.getParameter("search");
+		MessageStatus m = new MessageStatus();
+		List<File> listFile = fileServices.searchFile(condition,search);
+		m.setStatus("success");
+		m.setMessage("Load Success");
+		m.setData(listFile);
+		return m;
+	}
+
 
 }

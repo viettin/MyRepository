@@ -16,9 +16,9 @@ public class Level {
 	@Id
 	private int idLevel;
 	private String levelName;
-	private byte limitUp;
-	private byte totalLimitUp;
-	private byte limitDown;
+	private long limitUp;
+	private long totalLimitUp;
+	private long limitDown;
 	private String img;
 	@OneToMany
 	@JsonIgnore
@@ -36,11 +36,11 @@ public class Level {
 		return levelName;
 	}
 
-	public byte getTotalLimitUp() {
+	public long getTotalLimitUp() {
 		return totalLimitUp;
 	}
 
-	public void setTotalLimitUp(byte totalLimitUp) {
+	public void setTotalLimitUp(long totalLimitUp) {
 		this.totalLimitUp = totalLimitUp;
 	}
 
@@ -48,19 +48,19 @@ public class Level {
 		this.levelName = levelName;
 	}
 
-	public byte getLimitUp() {
+	public long getLimitUp() {
 		return limitUp;
 	}
 
-	public void setLimitUp(byte limitUp) {
+	public void setLimitUp(long limitUp) {
 		this.limitUp = limitUp;
 	}
 
-	public byte getLimitDown() {
+	public long getLimitDown() {
 		return limitDown;
 	}
 
-	public void setLimitDown(byte limitDown) {
+	public void setLimitDown(long limitDown) {
 		this.limitDown = limitDown;
 	}
 
