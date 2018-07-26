@@ -61,7 +61,7 @@ public class UserController {
 		return m;
 	}
 
-	@RequestMapping(value = "/logout", method = RequestMethod.GET) // get tat ca user cho trang admin
+	@RequestMapping(value = "/logout", method = RequestMethod.GET) // Logout
 	public @ResponseBody MessageStatus Logout(HttpSession session) {
 		MessageStatus m = new MessageStatus();
 		User userLoging = (User) session.getAttribute("userDetail");
@@ -75,31 +75,31 @@ public class UserController {
 			m.setMessage("Da~ dang nhap deoo dau");
 			return m;
 		}
-
 	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET) // get tat ca user cho trang admin
 	public @ResponseBody List<User> getAllUserByAdmin(HttpSession session) {
-
 		List<User> listUser = null;
-
 		User userLoging = (User) session.getAttribute("userDetail");
 		if (userLoging == null) { // chua dang nhap
-
 		} else {
 			if (userLoging.isAdmin()) {
 				listUser = userService.getAllUser();
 			}
 		}
-
 		return listUser;
 	}
-
-//	@RequestMapping(value = "/register", method = RequestMethod.POST) //register
-//	public @ResponseBody MessageStatus addUser(HttpServletRequest request) {
-//
-//		Date date = new Date();
-//		return null;}
+	@RequestMapping(value = "/user{iduser}", method = RequestMethod.GET) // get tat ca user cho trang admin
+	public @ResponseBody MessageStatus getUser(@PathVariable int iduser,HttpSession session) {
+		List<User> listUser = null;
+		User userLoging = (User) session.getAttribute("userDetail");
+		if (userLoging == null) { // chua dang nhap
+		} else {
+			User us = userService.getUser(iduser);
+			}
+		}
+		return listUser;
+	}
 
 	@RequestMapping(value = "/adduser", method = RequestMethod.POST)
 	public @ResponseBody MessageStatus adduser(HttpServletRequest request) {
@@ -110,7 +110,6 @@ public class UserController {
 		user.setEmail(request.getParameter("email"));
 		user.setAdmin(false);
 		user.setCreateDate(date);
-
 		MessageStatus m = new MessageStatus();
 		if (userService.addUser(user)) {
 			m.setStatus("success");
@@ -124,26 +123,24 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "delete/{email}", method = RequestMethod.DELETE) // delete user
-	public @ResponseBody MessageStatus deleteByEmail(@PathVariable String email,HttpSession session) {
+	public @ResponseBody MessageStatus deleteByEmail(@PathVariable String email, HttpSession session) {
 		User userLoging = (User) session.getAttribute("userDetail");
 		MessageStatus m = new MessageStatus();
-		if(userLoging != null) {
-			if(userLoging.isAdmin()) {
-				
+		if (userLoging != null) {
+			if (userLoging.isAdmin()) {
 				if (userService.deleteUser(email)) {
-					List <User> userList= userService.getAllUser();
+					List<User> userList = userService.getAllUser();
 					m.setStatus("success");
 					m.setMessage("delete Success");
 					m.setData(userList);
 					return m;
-			}
+				}
 				m.setStatus("fail");
 				m.setMessage("You are not Admin");
-				
+
 				return m;
 			}
-			
-		}else {
+		} else {
 			m.setStatus("fail");
 			m.setMessage("delete unsuccess");
 		}
@@ -243,14 +240,11 @@ public class UserController {
 			m.setStatus("fail ");
 			m.setMessage("fail ");
 			return m;
-
 		} else {
-			
-				File file = fileServices.getByIdFile(idFile);
-				m.setStatus("success");
-				m.setMessage("Load Success");
-				m.setData(file);
-			
+			File file = fileServices.getByIdFile(idFile);
+			m.setStatus("success");
+			m.setMessage("Load Success");
+			m.setData(file);
 			return m;
 		}
 	}
@@ -305,7 +299,7 @@ public class UserController {
 			m.setMessage(fileDownloadUri);
 			return m;
 		}
-		
+
 		return m;
 
 	}
@@ -313,26 +307,26 @@ public class UserController {
 	@GetMapping("/downloadFile/{fileId}")
 	public ResponseEntity<byte[]> getFile(@PathVariable int fileId) {
 		File file = fileServices.getByIdFile(fileId);
-		
-		if(file !=null) {
-			
+
+		if (file != null) {
+
 			return ResponseEntity.ok()
 					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
-					.body(file.getData());	
+					.body(file.getData());
 		}
-		
+
 		return ResponseEntity.status(404).body(null);
 	}
+
 	@RequestMapping(value = "/search/{condition}", method = RequestMethod.POST) // Get File cho trang chu
-	public @ResponseBody MessageStatus getAllFile(@PathVariable String condition,HttpServletRequest request) {
+	public @ResponseBody MessageStatus getAllFile(@PathVariable String condition, HttpServletRequest request) {
 		String search = request.getParameter("search");
 		MessageStatus m = new MessageStatus();
-		List<File> listFile = fileServices.searchFile(condition,search);
+		List<File> listFile = fileServices.searchFile(condition, search);
 		m.setStatus("success");
 		m.setMessage("Load Success");
 		m.setData(listFile);
 		return m;
 	}
-
 
 }

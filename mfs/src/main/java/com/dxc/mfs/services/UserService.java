@@ -67,6 +67,9 @@ public class UserService {
 			 return userUpdate;
 		 }
 		 return userUpdate;
-		 
-	 }
+		}
+	public User getUser(int iduser) {
+		User us = userRepository.getOne(iduser);
+		return us;
+	}
 }
