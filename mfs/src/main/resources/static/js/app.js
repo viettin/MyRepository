@@ -58,18 +58,23 @@ var LogupCtrl = [ '$rootScope', '$scope', '$http', 'transformRequestAsFormPost',
 }]
 
 var DeleteCtrl = [ '$rootScope', '$scope', '$http', 'transformRequestAsFormPost', '$state', function ($rootScope, $scope, $http, transformRequestAsFormPost, $state) {
-	$scope.userData1 = {
+	$scope.userData = {
 		email : ''
 	}
 	
 	$scope.errorMessage = '';
 	
-	$scope.doDelete = function () {
+	/*$scope.deleteUser = function (email) {
+		alert(email);
+	}*/
+	
+	$scope.doDelete = function (email) {
 		$scope.errorMessage = '';
 		//send data cho backend va kiem tra ket qua.
+		//alert(email);
 		$http({
 	          method  : 'DELETE',
-	          url     : '/delete/'+$scope.userData1.email,
+	          url     : '/delete/'+email,
 	          data    : $scope.userData,
 	          headers : { 'Content-Type': 'application/x-www-form-urlencoded' },
 	          transformRequest: transformRequestAsFormPost
@@ -79,10 +84,36 @@ var DeleteCtrl = [ '$rootScope', '$scope', '$http', 'transformRequestAsFormPost'
 	        		 $rootScope.userData = response.data.data;
 	        		 $scope.errorMessage = 'good';
 	        	 } else {
-	        		 $scope.errorMessage = 'email and password not correct';
+	        		 $scope.errorMessage = 'email not correct';
 	        	 }
+	         }).catch((err)=>{
+	        	 console.log(err);
 	         });
 	}
+	
+	$scope.init = function () {
+		$http({
+	          method  : 'GET',
+	          url     : '/admin'
+	         })
+	         .then(function(response) {
+	        	 $scope.listUser = response.data;
+	         });
+	}
+	
+	$scope.init();
+	
+	$scope.init1 = function () {
+		$http({
+	          method  : 'GET',
+	          url     : '/files'
+	         })
+	         .then(function(response) {
+	        	 $scope.listFile = response.data;
+	         });
+	}
+	
+	$scope.init1();
 }]
 var UpdateCtrl = [ '$rootScope', '$scope', '$http', 'transformRequestAsFormPost', '$state', function ($rootScope, $scope, $http, transformRequestAsFormPost, $state) {
 	$scope.userData1 = {
@@ -150,9 +181,9 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
         	templateUrl: 'template/register.html',
         	controller: 'LogupCtrl'
         })
-        .state('delete', {
-        	url: '/delete',
-        	templateUrl: 'template/delete.html',
+        .state('manage-user', {
+        	url: '/manage-user',
+        	templateUrl: 'template/manage-user.html',
         	controller: 'DeleteCtrl'
         })
         .state('update', {
@@ -160,6 +191,11 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
         	templateUrl: 'template/update.html',
         	controller: 'UpdateCtrl'
         })
+       /* .state('update', {
+        	url: '/update',
+        	templateUrl: 'template/update.html',
+        	controller: 'UpdateCtrl'
+        })*/
 
 });
 

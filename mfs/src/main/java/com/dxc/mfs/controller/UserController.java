@@ -1,33 +1,54 @@
 package com.dxc.mfs.controller;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.dxc.mfs.model.Comment;
+import com.dxc.mfs.model.File;
+import com.dxc.mfs.model.UploadFileResponse;
 import com.dxc.mfs.model.User;
-import com.dxc.mfs.repository.FileRepository;
 import com.dxc.mfs.services.CommentServices;
+import com.dxc.mfs.services.FileServices;
 import com.dxc.mfs.services.UserService;
+
 
 @RestController
 public class UserController {
 	private static final String String = null;
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	UserService userService;
 	@Autowired
 	CommentServices commentServices;
+	@Autowired
+	FileServices fileServices;
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/login", method = RequestMethod.POST)// Login
 	public @ResponseBody MessageStatus login(HttpServletRequest request, HttpSession session) {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
@@ -46,7 +67,7 @@ public class UserController {
 		return m;
 	}
 
-	@RequestMapping(value = "/admin", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin", method = RequestMethod.GET) // get tat ca user cho trang admin
 	public @ResponseBody List<User> getAllUserByAdmin(HttpSession session) {
 
 		List<User> listUser = null;
@@ -60,33 +81,39 @@ public class UserController {
 			}
 		}
 
+
 		return listUser;
 	}
 
-	@RequestMapping(value = "/adduser", method = RequestMethod.POST)
-	public @ResponseBody MessageStatus addUser(HttpServletRequest request) {
+//	@RequestMapping(value = "/register", method = RequestMethod.POST) //register
+//	public @ResponseBody MessageStatus addUser(HttpServletRequest request) {
+//
+//		Date date = new Date();
+//		return null;}
 
-		Date date = new Date();
+	@RequestMapping(value="/adduser",method = RequestMethod.POST)
+	public  @ResponseBody MessageStatus adduser (HttpServletRequest request) {
+		Date  date = new Date();
 		User user = new User();
-		user.setfullname(request.getParameter("username"));
+		user.setfullname(request.getParameter("fullname"));
 		user.setPassword(request.getParameter("password"));
 		user.setEmail(request.getParameter("email"));
 		user.setAdmin(false);
 		user.setCreateDate(date);
-		userService.addUser(user);
+		
 		MessageStatus m = new MessageStatus();
-		if (user != null) {
+		if (userService.addUser(user)) {
 			m.setStatus("success");
 			m.setMessage("Register Success");
 			m.setData(user);
 		} else {
 			m.setStatus("fail");
-			m.setMessage("Register unsuccess");
+			m.setMessage("User is ready exist");
 		}
 		return m;
 	}
 
-	@RequestMapping(value = "delete/{email}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "delete/{email}", method = RequestMethod.DELETE)// delete user
 	public @ResponseBody MessageStatus deleteByEmail(@PathVariable String email) {
 
 		MessageStatus m = new MessageStatus();
@@ -100,32 +127,16 @@ public class UserController {
 		}
 		return m;
 	}
-
-	@RequestMapping(value = "update/{email}", method = RequestMethod.PATCH)
-	public @ResponseBody MessageStatus updateByEmail(@PathVariable String email, HttpServletRequest request,HttpSession session) {
-		String name = request.getParameter("fullname");
-		String pass = request.getParameter("password");
-		System.out.println(name);
-		System.out.println(pass);
-		User userLoging = (User) session.getAttribute("userDetail");
+	@RequestMapping(value = "update/{email}", method = RequestMethod.PATCH)//cap nhat thong tin user
+	public @ResponseBody MessageStatus updateByEmail(@PathVariable String email, HttpServletRequest request) {
+		String fullname = request.getParameter("username");
+		String password = request.getParameter("password");
+		User user = userService.updateUser(email, fullname, password);
 		MessageStatus m = new MessageStatus();
-		if (userLoging != null) {
-			if (!userLoging.isAdmin()) {
-				userLoging.setfullname(name);
-				userLoging.setPassword(pass);
-				userService.updateUser(userLoging);
-				m.setStatus("success");
-				m.setMessage("update Success");
-				m.setData(userLoging);
-			} else {
-
-				User user = userService.updateUser(email, name, pass);
-				m.setStatus("success");
-				m.setMessage("update Success");
-				m.setData(user);
-				return m;
-
-			}
+		if (user != null) {
+			m.setStatus("success");
+			m.setMessage("update Success");
+			m.setData(user);
 		} else {
 			m.setStatus("fail");
 			m.setMessage("update unsuccess");
@@ -133,7 +144,7 @@ public class UserController {
 		return m;
 	}
 
-	@RequestMapping(value = "comment/{idfile}", method = RequestMethod.POST)
+	@RequestMapping(value = "comment/{idfile}", method = RequestMethod.POST)//comment  theo file
 	public @ResponseBody MessageStatus commentFile(@PathVariable int idfile, HttpServletRequest request,
 			HttpSession session) {
 		User userLoging = (User) session.getAttribute("userDetail");
@@ -160,9 +171,131 @@ public class UserController {
 				m.setMessage("Comment Success");
 				m.setData(cmt);
 				return m;
-
 			}
 		}
 		return m;
 	}
+
+	@RequestMapping(value = "deletefile/{idfile}", method = RequestMethod.DELETE)// delete file
+	public @ResponseBody MessageStatus deleteByEmail(@PathVariable int idfile) {
+		
+		MessageStatus m = new MessageStatus();
+		if (fileServices.deleteFile(idfile)) {
+			m.setStatus("success");
+			m.setMessage("delete Success");
+			List <File>filelist = fileServices.getAllFile();
+			m.setData(filelist);
+			
+		} else {
+			m.setStatus("fail");
+			m.setMessage("delete unsuccess");
+		}
+		return m;
+	}
+	@RequestMapping(value = "updatefile/{idfile}", method = RequestMethod.PATCH) // cap nhap thong tin file
+	public @ResponseBody MessageStatus updateByEmail(@PathVariable int idFile, HttpServletRequest request) {
+		File file = fileServices.getByIdFile(idFile);
+		MessageStatus m = new MessageStatus();
+		if (file != null) {
+			file.setFileName(request.getParameter("filename"));
+			file.setDescription("description");
+			fileServices.updateFile(file);
+			m.setStatus("success");
+			m.setMessage("update Success");
+			m.setData(file);
+		} else {
+			m.setStatus("fail");
+			m.setMessage("update unsuccess");
+		}
+		return m;
+	}
+	@RequestMapping(value = "/file/{idfile}", method = RequestMethod.GET)//get thong tin 1 file theo id
+	public @ResponseBody MessageStatus getFile (@PathVariable int idFile, HttpServletRequest request,HttpSession session) {
+		MessageStatus m = new MessageStatus();
+		User userLoging = (User) session.getAttribute("userDetail");
+		if (userLoging == null) { // chua dang nhap
+			m.setStatus("fail cmnr");
+			m.setMessage("fail cmnr");
+			return m;
+			
+		} else {
+			if (!userLoging.isAdmin()) {
+				File file = fileServices.getByIdFile(idFile);
+				m.setStatus("success");
+				m.setMessage("Load Success");
+				m.setData(file);
+			}
+			else {
+				m.setStatus("fail cmnr");
+				m.setMessage("fail cmnr");
+				return m;
+			}
+		return m;}
+	}
+	@RequestMapping(value = "/file/all", method = RequestMethod.GET)//get file theo user da dang nhap.
+	public @ResponseBody MessageStatus getAllFileUser (HttpSession session) {
+		MessageStatus m = new MessageStatus();
+		User userLoging = (User) session.getAttribute("userDetail");
+		if (userLoging == null) { // chua dang nhap
+			m.setStatus("fail cmnr");
+			m.setMessage("fail cmnr");
+			return m;
+		} else {
+			if (!userLoging.isAdmin()) {
+				String emailUser = userLoging.getEmail();
+				List<File> listFile = fileServices.getAllFileByEmail(emailUser);
+				m.setStatus("success");
+				m.setMessage("Load Success");
+				m.setData(listFile);
+			}
+			else {
+				m.setStatus("fail cmnr");
+				m.setMessage("fail cmnr");
+				return m;
+			}
+		return m;}
+	}
+	@RequestMapping(value = "/file", method = RequestMethod.GET)//Get File cho trang chu
+	public @ResponseBody MessageStatus getAllFile () {
+		MessageStatus m = new MessageStatus();
+		List<File> listFile = fileServices.getAllFile();
+		m.setStatus("success");
+		m.setMessage("Load Success");
+		m.setData(listFile);
+		return m;
+	}
+	
+	 @PostMapping("/uploadFile")
+	    public MessageStatus uploadFile(@RequestParam("file") MultipartFile file,HttpSession session) throws IOException {
+		 User userLoging = (User) session.getAttribute("userDetail");
+		 MessageStatus m = new MessageStatus();
+		 Date date = new Date();
+		 File newFile = new File();
+		 if(userLoging != null) {
+		 	String name = userLoging.getFullname();
+		 	String email =  userLoging.getEmail();
+	        File dbFile = fileServices.storeFile(file,name,email);
+	        m.setStatus("success");
+	     			m.setMessage("Load Success");
+	     			m.setData(dbFile);
+	     			return m;
+		 }
+	        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+	                .path("/downloadFile/")
+	                .path(newFile.getFileName())
+	                .toUriString();
+return m;
+	     	
+	    }
+@GetMapping("/downloadFile/{fileId}")
+	    public ResponseEntity<Resource> downloadFile(@PathVariable int fileId) {
+	        // Load file from database
+	        File dbFile = fileServices.getByIdFile(fileId);
+
+	        return ResponseEntity.ok()
+	                .contentType(MediaType.parseMediaType(dbFile.getType()))
+	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
+	                .body(new ByteArrayResource(dbFile.getData()));
+	    }
+	   
 }

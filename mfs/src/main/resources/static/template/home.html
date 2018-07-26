@@ -1,1 +1,47 @@
 <h1>Home</h1>
+
+<!-- PAGE CONTAINER-->
+ <div class="page-container">
+     <!-- HEADER DESKTOP-->
+     <header class="header-desktop">
+         <div class="section__content section__content--p30">
+             <div class="container-fluid">
+                 <div class="header-wrap">
+                 
+                     <form class="form-header" action="" method="POST">
+                         <input class="au-input au-input--xl" type="text" name="search" placeholder="Tìm kiếm..." />
+                        
+                     </form>
+                     
+                 </div>
+             </div>
+         </div>
+     </header>
+    
+<div class="col-md-12">
+ <!-- DATA TABLE -->
+ <div class="table-responsive table-responsive-data2">
+     <table class="table table-data2">
+         <thead>
+             <tr>
+                 <th>type</th>
+                 <th>desciption</th>
+             </tr>
+         </thead>
+         <tbody>
+             <tr class="tr-shadow" ng-repeat="file in listFile">
+                 <td>{{file.type}}</td>
+                 <td>{{file.description}}</td>
+                 <!-- <td><button ng-click="deleteUser(user.email)">Delete</button></td> -->
+                 
+             </tr>
+         </tbody>
+       </table>
+     </div>
+  </div>
+	
+     <!-- MAIN CONTENT-->
+     <div class="main-content">
+         
+     </div><!-- END MAIN CONTENT-->    
+ </div><!-- END PAGE CONTAINER-->

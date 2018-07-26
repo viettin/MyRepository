@@ -28,11 +28,17 @@ public class UserService {
 		 List<User> listUser = userRepository.findAll();
 		 return listUser;
 	 }
-	 public User addUser (User user) {
-		 userRepository.save(user);
-		 levelRepository.findByIdLevel(1).getUserList().add(user);
-		 user.setIdLevel(levelRepository.findByIdLevel(1));
-		 return user;
+	 public boolean addUser (User user) {
+		 User checkUser= userRepository.findByEmail(user.getEmail());
+ 		if(checkUser == null) {
+ 			userRepository.save(user);
+ 			 levelRepository.findByIdLevel(1).getUserList().add(user);
+ 			 user.setIdLevel(levelRepository.findByIdLevel(1));
+ 			 return true;
+ 		}
+ 		else {
+ 			return false;
+ 		}
 	 }
 	 public boolean deleteUser (String email){
 		 User user = userRepository.findByEmail(email);
