@@ -59,7 +59,8 @@ public List<File> getAllFileByEmail(String email){
             }
             Date date = new Date();
             File newFile = new File(); 
-            newFile.setFileName(file.getName());
+            newFile.setFileName(file.getOriginalFilename());
+            System.out.println(newFile.getFileName());
 		 	newFile.setEmailUploader(email);
 		 	newFile.setType(file.getContentType());
 		 	newFile.setUploader(name);
