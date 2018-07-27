@@ -1,10 +1,9 @@
 package com.dxc.mfs.controller;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,10 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +26,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.dxc.mfs.model.Comment;
 import com.dxc.mfs.model.File;
-import com.dxc.mfs.model.UploadFileResponse;
 import com.dxc.mfs.model.User;
 import com.dxc.mfs.services.CommentServices;
 import com.dxc.mfs.services.FileServices;
@@ -66,7 +61,7 @@ public class UserController {
 		return m;
 	}
 
-	@RequestMapping(value = "/logout", method = RequestMethod.GET) // get tat ca user cho trang admin
+	@RequestMapping(value = "/logout", method = RequestMethod.GET) // Logout
 	public @ResponseBody MessageStatus Logout(HttpSession session) {
 		MessageStatus m = new MessageStatus();
 		User userLoging = (User) session.getAttribute("userDetail");
@@ -80,31 +75,31 @@ public class UserController {
 			m.setMessage("Da~ dang nhap deoo dau");
 			return m;
 		}
-
 	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET) // get tat ca user cho trang admin
 	public @ResponseBody List<User> getAllUserByAdmin(HttpSession session) {
-
 		List<User> listUser = null;
-
 		User userLoging = (User) session.getAttribute("userDetail");
 		if (userLoging == null) { // chua dang nhap
-
 		} else {
 			if (userLoging.isAdmin()) {
 				listUser = userService.getAllUser();
 			}
 		}
-
 		return listUser;
 	}
-
-//	@RequestMapping(value = "/register", method = RequestMethod.POST) //register
-//	public @ResponseBody MessageStatus addUser(HttpServletRequest request) {
-//
-//		Date date = new Date();
-//		return null;}
+	@RequestMapping(value = "/user{iduser}", method = RequestMethod.GET) // get tat ca user cho trang admin
+	public @ResponseBody MessageStatus getUser(@PathVariable int iduser,HttpSession session) {
+		List<User> listUser = null;
+		User userLoging = (User) session.getAttribute("userDetail");
+		if (userLoging == null) { // chua dang nhap
+		} else {
+			User us = userService.getUser(iduser);
+			}
+		}
+		return listUser;
+	}
 
 	@RequestMapping(value = "/adduser", method = RequestMethod.POST)
 	public @ResponseBody MessageStatus adduser(HttpServletRequest request) {
@@ -115,7 +110,6 @@ public class UserController {
 		user.setEmail(request.getParameter("email"));
 		user.setAdmin(false);
 		user.setCreateDate(date);
-
 		MessageStatus m = new MessageStatus();
 		if (userService.addUser(user)) {
 			m.setStatus("success");
@@ -129,26 +123,24 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "delete/{email}", method = RequestMethod.DELETE) // delete user
-	public @ResponseBody MessageStatus deleteByEmail(@PathVariable String email,HttpSession session) {
+	public @ResponseBody MessageStatus deleteByEmail(@PathVariable String email, HttpSession session) {
 		User userLoging = (User) session.getAttribute("userDetail");
 		MessageStatus m = new MessageStatus();
-		if(userLoging != null) {
-			if(userLoging.isAdmin()) {
-				
+		if (userLoging != null) {
+			if (userLoging.isAdmin()) {
 				if (userService.deleteUser(email)) {
-					List <User> userList= userService.getAllUser();
+					List<User> userList = userService.getAllUser();
 					m.setStatus("success");
 					m.setMessage("delete Success");
 					m.setData(userList);
 					return m;
-			}
+				}
 				m.setStatus("fail");
 				m.setMessage("You are not Admin");
-				
+
 				return m;
 			}
-			
-		}else {
+		} else {
 			m.setStatus("fail");
 			m.setMessage("delete unsuccess");
 		}
@@ -157,7 +149,7 @@ public class UserController {
 
 	@RequestMapping(value = "update/{email}", method = RequestMethod.PATCH) // cap nhat thong tin user
 	public @ResponseBody MessageStatus updateByEmail(@PathVariable String email, HttpServletRequest request) {
-		String fullname = request.getParameter("username");
+		String fullname = request.getParameter("fullname");
 		String password = request.getParameter("password");
 		User user = userService.updateUser(email, fullname, password);
 		MessageStatus m = new MessageStatus();
@@ -245,21 +237,14 @@ public class UserController {
 		MessageStatus m = new MessageStatus();
 		User userLoging = (User) session.getAttribute("userDetail");
 		if (userLoging == null) { // chua dang nhap
-			m.setStatus("fail cmnr");
-			m.setMessage("fail cmnr");
+			m.setStatus("fail ");
+			m.setMessage("fail ");
 			return m;
-
 		} else {
-			if (!userLoging.isAdmin()) {
-				File file = fileServices.getByIdFile(idFile);
-				m.setStatus("success");
-				m.setMessage("Load Success");
-				m.setData(file);
-			} else {
-				m.setStatus("fail cmnr");
-				m.setMessage("fail cmnr");
-				return m;
-			}
+			File file = fileServices.getByIdFile(idFile);
+			m.setStatus("success");
+			m.setMessage("Load Success");
+			m.setData(file);
 			return m;
 		}
 	}
@@ -314,19 +299,34 @@ public class UserController {
 			m.setMessage(fileDownloadUri);
 			return m;
 		}
-		
+
 		return m;
 
 	}
 
 	@GetMapping("/downloadFile/{fileId}")
-	public ResponseEntity<Resource> downloadFile(@PathVariable int fileId) {
-		// Load file from database
-		File dbFile = fileServices.getByIdFile(fileId);
+	public ResponseEntity<byte[]> getFile(@PathVariable int fileId) {
+		File file = fileServices.getByIdFile(fileId);
 
-		return ResponseEntity.ok().contentType(MediaType.parseMediaType(dbFile.getType()))
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getIdFile() + "\"")
-				.body(new ByteArrayResource(dbFile.getData()));
+		if (file != null) {
+
+			return ResponseEntity.ok()
+					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
+					.body(file.getData());
+		}
+
+		return ResponseEntity.status(404).body(null);
+	}
+
+	@RequestMapping(value = "/search/{condition}", method = RequestMethod.POST) // Get File cho trang chu
+	public @ResponseBody MessageStatus getAllFile(@PathVariable String condition, HttpServletRequest request) {
+		String search = request.getParameter("search");
+		MessageStatus m = new MessageStatus();
+		List<File> listFile = fileServices.searchFile(condition, search);
+		m.setStatus("success");
+		m.setMessage("Load Success");
+		m.setData(listFile);
+		return m;
 	}
 
 }

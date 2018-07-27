@@ -29,8 +29,8 @@ public class User {
 	private String email;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Level idLevel;
-	private byte currentUp;
-	private byte currentDown;
+	private long currentUp;
+	private long currentDown;
 	private Date createDate;
 	private boolean isAdmin;
 
@@ -81,19 +81,19 @@ public class User {
 		this.idLevel = idLevel;
 	}
 
-	public byte getCurrentUp() {
+	public long getCurrentUp() {
 		return currentUp;
 	}
 
-	public void setCurrentUp(byte currentUp) {
+	public void setCurrentUp(long currentUp) {
 		this.currentUp = currentUp;
 	}
 
-	public byte getCurrentDown() {
+	public long getCurrentDown() {
 		return currentDown;
 	}
 
-	public void setCurrentDown(byte currentDown) {
+	public void setCurrentDown(long currentDown) {
 		this.currentDown = currentDown;
 	}
 
