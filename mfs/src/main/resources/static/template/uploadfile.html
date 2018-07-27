@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
+<!-- <input ng-model="" type="text" class="input" />
+<button ng-click="doUpload()" class="button2">Tai len</button> -->
+<form ng-app="fileUpload" ng-controller="MyCtrl" name="form">
+  validation mỗi ảnh tải lên
+  <div class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
+    ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
+    ngf-resize="{width: 100, height: 100}">Select</div>
 
-</body>
-</html>
+</form>
+
+Upload right away after file selection:
+<input type="file"
+               id="avatar" name="avatar"
+                />
+<div class="button" ngf-select="uploadFiles($files)" multiple="multiple">Upload on file select</div>
+  Drop File:
+<div ngf-drop="uploadFiles($files)" class="drop-box"
+  ngf-drag-over-class="'dragover'" ngf-multiple="true"
+  ngf-pattern="'image/*,application/pdf'">Kéo thả ảnh hoặc file PDF ở đây</div>
+<div ngf-no-file-drop>Kéo thả file không được hỗ trợ trên trình duyệt</div>

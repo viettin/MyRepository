@@ -21,6 +21,9 @@
 	<script src="js/app.js"></script>
 	
 	
+ 	<script src="vendor/ng-file-upload-shim.min.js"></script> <!-- Không hỗ trợ trình duyệt html5 -->
+	<script src="vendor/ng-file-upload.min.js"></script>
+	
  	
     <!-- <script>
     
@@ -59,12 +62,9 @@
 		<a ui-sref="register" class="btn btn-danger" ng-if="!userData">Dang ky</a>
 		<a ui-sref="manage-user" class="btn btn-danger" ng-if="userData && userData.admin">Quan ly tai khoan</a>
 		<a ui-sref="logout" class="btn btn-danger" ng-if="userData">Dang xuat</a>
-		<a ui-sref="update" class="btn btn-danger">Sua</a>
+		<!-- <a ui-sref="upload" class="btn btn-danger">Tai len</a> -->
 	</div>
-	
-
 	<div ui-view></div>
-
 </body>
 
 </html>

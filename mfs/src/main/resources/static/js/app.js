@@ -185,6 +185,10 @@ var UpdateCtrl = [ '$rootScope', '$scope', '$http', 'transformRequestAsFormPost'
 	}
 }]
 
+
+
+
+
 var myApp = angular.module('myApp', ['ui.router']);
 
 myApp.controller('LoginCtrl', LoginCtrl);
@@ -193,6 +197,8 @@ myApp.controller('DeleteCtrl', DeleteCtrl);
 myApp.controller('UpdateCtrl', UpdateCtrl);
 myApp.controller('InitCtrl', InitCtrl);
 myApp.controller('LogoutCtrl', LogoutCtrl);
+/*myApp.controller('UploadCtrl', UploadCtrl);*/
+
 
 
 
@@ -236,10 +242,10 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
         	templateUrl: 'template/update.html',
         	controller: 'UpdateCtrl'
         })
-       /* .state('update', {
-        	url: '/update',
-        	templateUrl: 'template/update.html',
-        	controller: 'UpdateCtrl'
+       /* .state('upload', {
+        	url: '/upload',
+        	templateUrl: 'template/uploadfile.html',
+        	controller: 'UploadCtrl'
         })*/
 
 });
